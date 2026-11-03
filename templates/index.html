@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>PyBank</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+
+    <header class="topo">
+
+        <div>
+
+            <h1>PyBank</h1>
+
+            <p>Sistema Bancário</p>
+
+        </div>
+
+        <a href="/resetar" class="botao-resetar">
+            Nova sessão
+        </a>
+
+    </header>
+
+
+    <main class="container">
+
+
+        <section class="boas-vindas">
+
+            <h2>
+                Olá, {{ conta1.titular }}! 👋
+            </h2>
+
+            <p>
+                Bem-vindo ao seu painel financeiro.
+            </p>
+
+        </section>
+
+
+        <!-- MENSAGENS -->
+
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+
+            {% if mensagens %}
+
+                <div class="mensagens">
+
+                    {% for categoria, mensagem in mensagens %}
+
+                        <div class="mensagem {{ categoria }}">
+                            {{ mensagem }}
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+        {% endwith %}
+
+
+        <!-- CONTAS -->
+
+        <section class="contas">
+
+
+            <div class="conta-card">
+
+                <div class="conta-topo">
+
+                    <span>Conta 1</span>
+
+                    <span class="status">
+                        ●
+                    </span>
+
+                </div>
+
+
+                <p class="label">
+                    Titular da conta
+                </p>
+
+                <h3>
+                    {{ conta1.titular }}
+                </h3>
+
+
+                <h2 class="saldo">
+                    R$ {{ "%.2f"|format(conta1.saldo) }}
+                </h2>
+
+
+                <p class="guardado">
+                    Guardado:
+                    R$ {{ "%.2f"|format(conta1.saldo_guardado) }}
+                </p>
+
+
+                <p class="numero">
+                    Conta: •••• {{ conta1.numero_conta }}
+                </p>
+
+            </div>
+
+
+
+            <div class="conta-card">
+
+                <div class="conta-topo">
+
+                    <span>Conta 2</span>
+
+                    <span class="status">
+                        ●
+                    </span>
+
+                </div>
+
+
+                <p class="label">
+                    Titular da conta
+                </p>
+
+                <h3>
+                    {{ conta2.titular }}
+                </h3>
+
+
+                <h2 class="saldo">
+                    R$ {{ "%.2f"|format(conta2.saldo) }}
+                </h2>
+
+
+                <p class="guardado">
+                    Guardado:
+                    R$ {{ "%.2f"|format(conta2.saldo_guardado) }}
+                </p>
+
+
+                <p class="numero">
+                    Conta: •••• {{ conta2.numero_conta }}
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- MOVIMENTAÇÕES -->
+
+        <section class="movimentacoes">
+
+            <h2>Movimentações</h2>
+
+
+            <div class="acoes">
+
+
+                <!-- DEPOSITAR -->
+
+                <form action="/movimentar"
+                      method="POST"
+                      class="acao-form">
+
+                    <input
+                        type="hidden"
+                        name="operacao"
+                        value="depositar"
+                    >
+
+
+                    <h3>💰 Depositar</h3>
+
+
+                    <label>
+                        Conta
+                    </label>
+
+                    <select name="conta">
+
+                        <option value="1">
+                            Conta 1
+                        </option>
+
+                        <option value="2">
+                            Conta 2
+                        </option>
+
+                    </select>
+
+
+                    <label>
+                        Valor
+                    </label>
+
+                    <input
+                        type="number"
+                        name="valor"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="0.00"
+                        required
+                    >
+
+
+                    <button type="submit">
+                        Depositar
+                    </button>
+
+                </form>
+
+
+
+                <!-- SACAR -->
+
+                <form action="/movimentar"
+                      method="POST"
+                      class="acao-form">
+
+                    <input
+                        type="hidden"
+                        name="operacao"
+                        value="sacar"
+                    >
+
+
+                    <h3>💸 Sacar</h3>
+
+
+                    <label>
+                        Conta
+                    </label>
+
+                    <select name="conta">
+
+                        <option value="1">
+                            Conta 1
+                        </option>
+
+                        <option value="2">
+                            Conta 2
+                        </option>
+
+                    </select>
+
+
+                    <label>
+                        Valor
+                    </label>
+
+                    <input
+                        type="number"
+                        name="valor"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="0.00"
+                        required
+                    >
+
+
+                    <button type="submit">
+                        Sacar
+                    </button>
+
+                </form>
+
+
+
+                <!-- GUARDAR -->
+
+                <form action="/movimentar"
+                      method="POST"
+                      class="acao-form">
+
+                    <input
+                        type="hidden"
+                        name="operacao"
+                        value="guardar"
+                    >
+
+
+                    <h3>🏦 Guardar</h3>
+
+
+                    <label>
+                        Conta
+                    </label>
+
+                    <select name="conta">
+
+                        <option value="1">
+                            Conta 1
+                        </option>
+
+                        <option value="2">
+                            Conta 2
+                        </option>
+
+                    </select>
+
+
+                    <label>
+                        Valor
+                    </label>
+
+                    <input
+                        type="number"
+                        name="valor"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="0.00"
+                        required
+                    >
+
+
+                    <button type="submit">
+                        Guardar dinheiro
+                    </button>
+
+                </form>
+
+
+
+                <!-- RESGATAR -->
+
+                <form action="/movimentar"
+                      method="POST"
+                      class="acao-form">
+
+                    <input
+                        type="hidden"
+                        name="operacao"
+                        value="resgatar"
+                    >
+
+
+                    <h3>🔓 Resgatar</h3>
+
+
+                    <label>
+                        Conta
+                    </label>
+
+                    <select name="conta">
+
+                        <option value="1">
+                            Conta 1
+                        </option>
+
+                        <option value="2">
+                            Conta 2
+                        </option>
+
+                    </select>
+
+
+                    <label>
+                        Valor
+                    </label>
+
+                    <input
+                        type="number"
+                        name="valor"
+                        min="0.01"
+                        step="0.01"
+                        placeholder="0.00"
+                        required
+                    >
+
+
+                    <button type="submit">
+                        Resgatar dinheiro
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- RESUMO -->
+
+        <section class="resumo">
+
+
+            <div class="resumo-card">
+
+                <p>
+                    Saldo disponível
+                </p>
+
+                <h2>
+                    R$ {{ "%.2f"|format(saldo_total) }}
+                </h2>
+
+            </div>
+
+
+            <div class="resumo-card">
+
+                <p>
+                    Dinheiro guardado
+                </p>
+
+                <h2>
+                    R$ {{ "%.2f"|format(guardado_total) }}
+                </h2>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- HISTÓRICO -->
+
+        <section class="historico">
+
+            <h2>
+                Histórico
+            </h2>
+
+
+            <div class="historico-contas">
+
+
+                <div class="historico-card">
+
+                    <h3>
+                        {{ conta1.titular }}
+                    </h3>
+
+
+                    {% if conta1.historico %}
+
+                        <ul>
+
+                            {% for movimento in conta1.historico %}
+
+                                <li>
+                                    {{ movimento }}
+                                </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    {% else %}
+
+                        <p class="sem-movimentos">
+                            Nenhuma movimentação.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <div class="historico-card">
+
+                    <h3>
+                        {{ conta2.titular }}
+                    </h3>
+
+
+                    {% if conta2.historico %}
+
+                        <ul>
+
+                            {% for movimento in conta2.historico %}
+
+                                <li>
+                                    {{ movimento }}
+                                </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                    {% else %}
+
+                        <p class="sem-movimentos">
+                            Nenhuma movimentação.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+</body>
+
+</html>
